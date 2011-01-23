@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse
 from annoying.decorators import render_to
 import random
 from django.contrib.auth.views import login, logout
+from django.contrib.auth import login as userlogin
+from django.contrib.auth import authenticate
 
 # Importing our own stuff
 from csc450.cars.models import *
@@ -24,7 +26,9 @@ def user_register(request):
         form = UserRegisterForm(data=request.POST)
         if form.is_valid():
             new_user = form.save()
-            return HttpResponseRedirect(reverse('index'))
+            new_user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            userlogin(request, new_user)
+            return HttpResponseRedirect(reverse('dashboard'))
     else:
         form = UserRegisterForm()
     return {'form': form}
