@@ -18,7 +18,7 @@ class UserRegisterForm(forms.Form):
         raise forms.ValidationError("This username is unavailable.")
 
     def clean(self):
-        if 'passwords1' in self.cleaned_data and 'password2' in self.cleaned_data:
+        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError("Please type the same password twice.")
         return self.cleaned_data
