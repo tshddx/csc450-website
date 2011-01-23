@@ -93,6 +93,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'south',
+    'django_extensions',
     
     'csc450.cars',
     
