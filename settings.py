@@ -98,3 +98,6 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+# For the registration app
+ACCOUNT_ACTIVATION_DAYS = 7
