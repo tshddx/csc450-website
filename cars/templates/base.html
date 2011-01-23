@@ -19,9 +19,24 @@
 
   <body>
     <h1><a href="{% url index %}"> CSC 450 Group Project </a></h1>
+    <hr />
+    <div class="top-menu">
+      <p>Menu:</p>
+      <ul>
+        {% if user.is_authenticated %}
+          <li><a href="{% url dashboard %}">Your Dashboard</a></li>
+          <li><a href="{% url user_logoff %}">Log Off</a></li>
+        {% else %}
+          <li><a href="{% url user_login %}">Login</a></li>
+          <li><a href="{% url user_register %}">Register</a></li>
+        {% endif %}
+      </ul>
+    </div>
+    <hr />
 
     {% block content-area %}
     {% endblock %}
+    
 
   </body>
 

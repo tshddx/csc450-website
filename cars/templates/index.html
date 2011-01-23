@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content-area %}
+  <p>Welcome, friend!</p>
+  {% if user.is_authenticated %}
+    <p><i>You're logged in as {{ user.username }}.</i></p>
+  {% else %}
+    <p>Log in or register from the menu above.</p>
+  {% endif %}
+{% endblock %}
+  

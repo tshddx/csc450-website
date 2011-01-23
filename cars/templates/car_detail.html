@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ car }}{% endblock %}
+
+{% block content-area %}
+  <h2>Car Details</h2>
+  <form method="post" action="">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <p><input type="submit" value="Submit"></p>
+  </form>
+{% endblock %}
+  

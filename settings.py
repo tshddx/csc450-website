@@ -103,3 +103,5 @@ INSTALLED_APPS = (
 
 # For the registration app
 ACCOUNT_ACTIVATION_DAYS = 7
+
+LOGIN_REDIRECT_URL = "/"

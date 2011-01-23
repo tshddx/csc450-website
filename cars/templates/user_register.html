@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}User Registration{% endblock %}
+
+{% block content-area %}
+  <h2>Register</h2>
+  <form method="post" action="">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <p><span class="error">{{ form.non_field_errors|join:", " }}</span></p>
+    {% endif %}
+    <table>
+      <tbody>
+        {% for field in form %}
+          <tr>
+            <td>{{ field.label_tag }}</td>
+            <td>
+              {{ field }}
+              {% if field.errors %}
+                <span class="field-errors">{{ field.errors|join:", " }}</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    <p><input type="submit" value="Submit"></p>
+  </form>
+{% endblock %}
+  

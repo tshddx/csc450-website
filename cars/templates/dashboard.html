@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Dashboard{% endblock %}
+
+{% block content-area %}
+  <h2>{{ user.username }}'s dashboard</h2>
+  {% if cars %}
+    <h3>Your Cars</h3>
+    <ul>
+      {% for car in cars %}
+        <li>{{ car.as_a|safe }}</li>
+      {% endfor %}
+    </ul>
+    <p><a href="{% url add_car %}">Add another car</a>.</p>
+  {% else %}
+    <p>Welcome! The first thing to do is <a href="{% url add_car %}">add a car</a>.</p>
+  {% endif %}
+  
+{% endblock %}
+  
