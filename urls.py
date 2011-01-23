@@ -12,5 +12,11 @@ urlpatterns = patterns('',
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    # (r'^admin/', include(admin.site.urls)),
+    (r'^admin/', include(admin.site.urls)),
+
+    (r'^accounts/', include('registration.backends.default.urls.')),
+
+    # The following line serves the css files:
+    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': r'site_media'}),
+    (r'', include('csc450.cars.urls')),
 )
