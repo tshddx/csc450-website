@@ -93,9 +93,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'south',
-    'registration',
     
     'csc450.cars',
+    
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
