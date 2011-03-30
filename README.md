@@ -27,8 +27,8 @@ In the main project directory, there's a manage.py script. That's Django's utili
 
  It will start running [on port 8000](http://127.0.0.1:8000/). Go to it in your browser and log in with your superuser account, or register a new account. You can add cars, blah-dee-blah.
 
- Basics
- ------
+Basics
+------
 
  The main folder is what's called the Django project. It's mostly just settings. Our actual application is in the cars\ folder. You'll spend most your time in this directory.
 
