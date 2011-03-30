@@ -16,5 +16,5 @@ urlpatterns = patterns('',
 
     # The following line serves the css files:
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': r'site_media'}),
-    (r'', include('csc450.cars.urls')),
+    (r'', include('cars.urls')),
 )

@@ -1,4 +1,4 @@
-# Django settings for csc450 project.
+# Django settings for csc450-website project.
 from os import path
 
 DEBUG = True
@@ -76,13 +76,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'csc450.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    'csc450/cars',
+    'cars',
 )
 
 INSTALLED_APPS = (
@@ -95,7 +95,7 @@ INSTALLED_APPS = (
     'south',
     'django_extensions',
     
-    'csc450.cars',
+    'cars',
     
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',

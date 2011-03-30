@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
-from csc450.cars.models import *
+from cars.models import *
 
-urlpatterns = patterns('csc450.cars.views',
+urlpatterns = patterns('cars.views',
                        url(regex=r'^register$',
                            view='user_register',
                            name='user_register'

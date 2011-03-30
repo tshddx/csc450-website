@@ -11,8 +11,8 @@ from django.contrib.auth import login as userlogin
 from django.contrib.auth import authenticate
 
 # Importing our own stuff
-from csc450.cars.models import *
-from csc450.cars.forms import UserRegisterForm, CarForm
+from cars.models import *
+from cars.forms import UserRegisterForm, CarForm
 
 @render_to('index.html')
 def index(request):
@@ -26,7 +26,8 @@ def user_register(request):
         form = UserRegisterForm(data=request.POST)
         if form.is_valid():
             new_user = form.save()
-            new_user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            new_user = authenticate(username=form.cleaned_data['username'],
+                                    password=form.cleaned_data['password1'])
             userlogin(request, new_user)
             return HttpResponseRedirect(reverse('dashboard'))
     else:

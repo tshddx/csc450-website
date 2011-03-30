@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from csc450.cars.models import *
+from cars.models import *
 
 class UserRegisterForm(forms.Form):
     first_name = forms.CharField(max_length=128)
