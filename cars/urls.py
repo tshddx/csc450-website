@@ -1,5 +1,7 @@
 from django.conf.urls.defaults import *
+from django.views.generic import *
 from cars.models import *
+from cars.views import *
 
 urlpatterns = patterns('cars.views',
                        url(regex=r'^register$',
@@ -18,14 +20,24 @@ urlpatterns = patterns('cars.views',
                            view='dashboard',
                            name='dashboard'
                            ),
-                       url(regex=r'^car/(?P<id>[0-9]*)$',
-                           view='car_detail',
-                           name='car_detail',
-                           ),
-                       url(regex=r'^add$',
+                       url(regex=r'^vehicle/add$',
                            view='add_car',
                            name='add_car'
                            ),
+                       url(regex=r'^vehicle/(?P<pk>[0-9]*)$',
+                           view=VehicleUpdateView.as_view(),
+                           name='vehicle_detail',
+                           ),
+                       url(regex=r'^vehicle/(?P<pk>[0-9]*)/fillup/new$',
+                           view=FillupCreateView.as_view(),
+                           name='fillup_new'
+                           ),
+                       url(regex=r'fillup/(?P<pk>[0-9]*)^$',
+                           view='fillup_detail',
+                           name='fillup_detail'
+                           ),
+                       
+                       # Site root
                        url(regex=r'^$',
                            view='index',
                            name='index'

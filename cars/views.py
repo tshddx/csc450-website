@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 
 # Importing library stuff
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views.generic import *
 from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
 from annoying.decorators import render_to
 import random
 from django.contrib.auth.views import login, logout
@@ -12,7 +14,7 @@ from django.contrib.auth import authenticate
 
 # Importing our own stuff
 from cars.models import *
-from cars.forms import UserRegisterForm, CarForm
+from cars.forms import *
 
 @render_to('index.html')
 def index(request):
@@ -44,30 +46,62 @@ def user_logoff(request):
 def dashboard(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('index'))
-    cars = request.user.vehicle_set.all()
-    return {'cars': cars}
+    vehicles = request.user.vehicle_set.all()
+    print vehicles
+    return {'vehicles': vehicles}
 
 @render_to('add_car.html')
 def add_car(request):
     if request.method == 'POST':
-        form = CarForm(data=request.POST)
+        form = VehicleForm(data=request.POST)
         if form.is_valid():
             new_car = form.save(commit=False)
             new_car.owner = request.user
             new_car.save()
             return HttpResponseRedirect(reverse('dashboard'))
     else:
-        form = CarForm()
+        form = VehicleForm()
     return {'form': form}
 
-@render_to('car_detail.html')
-def car_detail(request, id):
-    car = Vehicle.objects.get(id=id)
+class VehicleCreateView(CreateView):
+    context_object_name = "vehicle"
+    model = Vehicle
+
+# TODO: make sure users can only see their own vehicles
+class VehicleUpdateView(UpdateView):
+    context_object_name = "vehicle"
+    model = Vehicle
+    form_class = VehicleForm
+    template_name = "vehicle_detail.html"
+    
+class FillupCreateView(CreateView):
+    context_object_name = "fillup"
+    template_name = "fillup_new.html"
+    form_class = FillupForm
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateView, self).get_form_kwargs()
+        vehicle = get_object_or_404(Vehicle, id=self.kwargs['pk'])
+        kwargs['vehicle'] = vehicle
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateView, self).get_context_data(**kwargs)
+        context['vehicle'] = get_object_or_404(Vehicle, id=self.kwargs['pk'])
+        return context
+
+    def get_success_url(self):
+        vehicle = get_object_or_404(Vehicle, id=self.kwargs['pk'])
+        return vehicle.get_absolute_url()
+
+@render_to('fillup_detail.html')
+def fillup_detail(request, id):
+    fillup = Fillup.objects.get(id=id)
     if request.method == 'POST':
-        form = CarForm(data=request.POST, instance=car)
+        form = FillupForm(data=request.POST, instance=fillup)
         if form.is_valid():
-            car = form.save()
-            return HttpResponseRedirect(reverse('car_detail', kwargs={'id': id}))
+            fillup = form.save()
     else:
-        form = CarForm(instance=car)
-    return {'car': car, 'form': form}
+        form = FillupForm(instance=fillup)
+    return {'fillup': fillup, 'form': form}
+

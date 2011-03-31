@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ car }}{% endblock %}
+
+{% block content-area %}
+  <h2>Vehicle Details</h2>
+  <div id="vehicle-form">
+    <form method="post" action="">
+      {% csrf_token %}
+      <table>
+        {{ form.as_table }}
+      </table>
+      <p><input type="submit" value="Submit"></p>
+    </form>
+  </div>
+  <div id="fillups">
+    <h2>Fillups</h2>
+    <p><a href="{% url fillup_new pk=vehicle.id %}">Add a new fillup for this vehicle</a></p>
+    {% if vehicle.fillup_set.all %}
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Odometer</th>
+            <th>Gallons</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for fillup in vehicle.fillup_set.all %}
+          <tr>
+            <td>{{ fillup.date }}</td>
+            <td>{{ fillup.odometer }}</td>
+            <td>{{ fillup.gallons }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>You haven't entered any fillups for this vehicle yet.</p>
+    {% endif %}
+{% endblock %}
+  

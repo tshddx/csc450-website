@@ -32,7 +32,21 @@ class UserRegisterForm(forms.Form):
         new_user.save()
         return new_user
 
-class CarForm(forms.ModelForm):
+class VehicleForm(forms.ModelForm):
     class Meta:
         model = Vehicle
         exclude = ['owner']
+
+class FillupForm(forms.ModelForm):
+    class Meta:
+        model = Fillup
+        exclude = ['vehicle', 'from_mobile']
+
+    def __init__(self, *args, **kwargs):
+        self.vehicle_model = kwargs.pop('vehicle')
+        super(FillupForm, self).__init__(*args, **kwargs)
+
+    def save(self):
+        fillup = super(FillupForm, self).save(commit=False)
+        fillup.vehicle = self.vehicle_model
+        fillup.save()

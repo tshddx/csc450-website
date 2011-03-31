@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ car }}{% endblock %}
+{% block title %}New Fillup for {{ vehicle.name }} {% endblock %}
 
 {% block content-area %}
-  <h2>Car Details</h2>
-  <p><a href="">Add a fillup for this car</a></p>
+  <h2>New Fillup for {{ vehicle.name }}</h2>
   <form method="post" action="">
     {% csrf_token %}
     <table>
