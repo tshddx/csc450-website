@@ -1,10 +1,17 @@
 <html>
   <head> <title> CSC 450 Group Project | {% block title %} {% endblock %} </title>
 
-  <link rel="shortcut icon" href="{{ MEDIA_URL }}img/favicon.png">
+  <link rel="shortcut icon" href="{{ MEDIA_URL }}img/favicon.png" />
+  
+  <!-- Framework CSS -->  
+  <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/screen.css" type="text/css" media="screen, projection" />  
+  <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/print.css" type="text/css" media="print" />  
+  <!--[if IE]><link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->
 
+  <link media="screen, projection" type="text/css" href="{{ MEDIA_URL }}css/blueprint_overrides.css" rel="stylesheet" />
   <link media="screen, projection" type="text/css" href="{{ MEDIA_URL }}css/cars.css" rel="stylesheet" />
 
+  
   {% block css %}
   {% endblock %}
 
@@ -18,26 +25,24 @@
   </head>
 
   <body>
-    <h1><a href="{% url index %}"> CSC 450 Group Project </a></h1>
-    <hr />
-    <div class="top-menu">
-      <p>Menu:</p>
-      <ul>
-        {% if user.is_authenticated %}
-          <li><a href="{% url dashboard %}">Your Dashboard</a></li>
-          <li><a href="{% url user_logoff %}">Log Off</a></li>
-        {% else %}
-          <li><a href="{% url user_login %}">Login</a></li>
-          <li><a href="{% url user_register %}">Register</a></li>
-        {% endif %}
-      </ul>
-    </div>
-    <hr />
+    <div id="main-container" class="container padded">
+      <h1><a href="{% url index %}"> CSC 450 Group Project </a></h1>
+      <div id="top-menu" class="span-4">
+        <ul>
+          {% if user.is_authenticated %}
+            <li><a href="{% url dashboard %}">Your Dashboard</a></li>
+            <li><a href="{% url user_logoff %}">Log Off</a></li>
+          {% else %}
+            <li><a href="{% url user_login %}">Login</a></li>
+            <li><a href="{% url user_register %}">Register</a></li>
+          {% endif %}
+        </ul>
+      </div>
 
     {% block content-area %}
     {% endblock %}
     
-
+    </div>
   </body>
 
 </html>

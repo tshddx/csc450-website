@@ -1,4 +1,39 @@
+body {
+    margin: 0 auto;
+    width: 960px;
+    background-color: #eee;
+}
+
+#main-container {
+    position: absolute;
+    margin-top: 15px;
+    background-color: white;
+    border: 2px solid gray;
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+}
+
+h1 a, h1 a:hover, h1 a:focus {
+    color: #CD3617;
+}
+
+h1 a:hover {
+    text-decoration: underline;
+}
+
 th {
     text-align: left;
     padding: 0px 8px;
+}
+
+#top-menu {
+    padding: 0 15px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+#top-menu ul {
+    list-style-type: none;
 }

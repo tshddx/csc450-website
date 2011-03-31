@@ -3,8 +3,8 @@
 {% block title %}{{ car }}{% endblock %}
 
 {% block content-area %}
-  <h2>Vehicle Details</h2>
-  <div id="vehicle-form">
+  <div id="vehicle-form" class="span-11 append-1">
+    <h2>Vehicle Details</h2>
     <form method="post" action="">
       {% csrf_token %}
       <table>
@@ -13,7 +13,7 @@
       <p><input type="submit" value="Submit"></p>
     </form>
   </div>
-  <div id="fillups">
+  <div id="fillups" class="span-12 last">
     <h2>Fillups</h2>
     <p><a href="{% url fillup_new pk=vehicle.id %}">Add a new fillup for this vehicle</a></p>
     {% if vehicle.fillup_set.all %}

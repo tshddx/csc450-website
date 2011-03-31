@@ -1,0 +1,26 @@
+.padded {
+    padding: 8px 20px;
+}
+
+a {
+    color: #57A476;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:focus, a:hover {
+    text-decoration: underline;
+    color: #57A476;
+}
+
+tbody tr:nth-child(2n) td, tbody tr.even td {
+    background: none repeat scroll 0 0 transparent;
+}
+
+thead th {
+    background: none repeat scroll 0 0 transparent;
+}
+
+textarea {
+    width: 100%;
+}
