@@ -27,7 +27,7 @@ class Vehicle(models.Model):
         aggregations = fillups.aggregate(total_gallons=models.Sum('gallons'),
                                          min_odo=models.Min('odometer'),
                                          max_odo=models.Max('odometer'))
-        if len(fillups) <= 1:
+        if len(fillups) > 1:
             aggregations['total_gallons'] -= fillups[0].gallons
         return aggregations
 
