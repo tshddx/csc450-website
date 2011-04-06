@@ -38,36 +38,6 @@ th {
     list-style-type: none;
 }
 
-#vehicle-stats {
-    background-color: #eee;
-    text-align: center;
-    height: 96px;
-    margin-bottom: 1.5em;
+#vehicle-details-form {
+    display: none;
 }
-
-#vehicle-stats .caption {
-    margin: 0;
-    position: relative;
-    top: -10px;
-    text-transform: uppercase;
-    color: #aaa;
-}
-
-.big-stat {
-    font-size: 24px;
-    color: silver;
-    margin-bottom: 0px;
-    height: 75px;
-}
-
-.big-stat .number {
-    color: gray;
-    font-size: 56px;
-    margin-right: 2px;
-}
-
-.big-stat .na {
-    color: gray;
-    font-size: 12px;
-}
-

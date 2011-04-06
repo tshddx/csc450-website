@@ -27,13 +27,35 @@ class Vehicle(models.Model):
         aggregations = fillups.aggregate(total_gallons=models.Sum('gallons'),
                                          min_odo=models.Min('odometer'),
                                          max_odo=models.Max('odometer'))
-        aggregations['total_gallons'] -= fillups[0].gallons
+        if len(fillups) <= 1:
+            aggregations['total_gallons'] -= fillups[0].gallons
         return aggregations
 
     def average_mileage(self):
         agg = self.aggregations()
-        average_mileage = (agg['max_odo'] - agg['min_odo']) / agg['total_gallons']
+        if agg['total_gallons'] > 0:
+            average_mileage = (agg['max_odo'] - agg['min_odo']) / agg['total_gallons']
+        else:
+            average_mileage = None
         return "%.1f" % average_mileage
+
+    def carbon_footprint(self):
+        """Returns a tuple of (number, unit) where both number and unit are strings."""
+        gallons = self.aggregations()['total_gallons']
+        co2 = float(gallons) * 99000.4
+        # This conditional number/unit crap sucks and is probably wrong
+        if co2 > 1000000:
+            number = "%.1f" % (co2 / 2000000) + "k"
+            unit = "tons"
+        elif co2 > 1000:
+            number = "%.1f" % (co2 / 1000) + "k"
+            if co2 > 100000:
+                number = "%.0f" % (co2 / 1000) + "k"
+            unit = "lb"
+        else:
+            number = "%.0f" % co2
+            unit = "lb"
+        return (number, unit)
             
 class Fillup(models.Model):
     vehicle = models.ForeignKey(Vehicle)

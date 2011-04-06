@@ -2,24 +2,53 @@
 
 {% block title %}{{ vehicle.name }}{% endblock %}
 
+{% block css %}
+<link media="screen, projection" type="text/css" href="{{ MEDIA_URL }}css/vehicle_detail.css" rel="stylesheet" />
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/vehicle_detail.js"></script>
+{% endblock %}
+
 {% block content-area %}
-  <div id="vehicle-form" class="span-11 append-1">
-    <h2>Vehicle Details</h2>
-    <form method="post" action="">
-      {% csrf_token %}
-      <table>
-        {{ form.as_table }}
-      </table>
-      <p><input type="submit" value="Submit"></p>
-    </form>
+<div class="span-24 last">
+  <div id="vehicle-details" class="span-9">
+    <div id="vehicle-form" class="span-9 last">
+      <h2>{{ vehicle.name }}</h2>
+      <h3>{{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}</h3>
+      <p id="edit-vehicle-details"><a href="#" class="button">Edit this vehicle's details</a></p>
+      <form id="vehicle-details-form" method="post" action="">
+        {% csrf_token %}
+        <table>
+          {{ form.as_table }}
+        </table>
+        <p><input type="submit" value="Submit"></p>
+      </form>
+    </div>
   </div>
-  <div id="average-mileage" class="span-12 last">
-    <p class="mileage"><span class="mileage-number">{{ vehicle.average_mileage|default:"32" }}</span>mpg</p>
-  </div>
-  <div id="fillups" class="span-12 last">
-    <h2>Fillups</h2>
-    <p><a href="{% url fillup_new pk=vehicle.id %}">Add a new fillup for this vehicle</a></p>
-    {% if vehicle.fillup_set.all %}
+  <div class="span-15 last">
+    <div id="vehicle-stats" class="span-15 last">
+      <div id="average-mileage" class="span-5">
+        {% if vehicle.average_mileage %}
+        <p class="big-stat"><span class="number">{{ vehicle.average_mileage }}</span>mpg</p>
+        {% else %}
+        <p class="big-stat"><span class="na">You must have at least two fillups to calculate mileage</span></p>
+        {% endif %}
+        <p class="caption">Average Mileage</p>
+      </div>
+      <div id="carbon-footprint" class="span-5">
+        <p class="big-stat"><span class="number">{{ vehicle.carbon_footprint.0 }}</span>{{ vehicle.carbon_footprint.1 }}</p>
+        <p class="caption">Carbon Footprint</p>
+      </div>
+      <div id="" class="span-5 last">
+        <p class="big-stat"><span class="number">32</span>px</p>
+        <p class="caption">Width of this box</p>
+      </div>
+    </div>    
+    <div id="fillups" class="span-15 last">
+      <h3>Fillups</h3>
+      <p><a href="{% url fillup_new pk=vehicle.id %}" class="button">Add a new fillup for this vehicle</a></p>
+      {% if vehicle.fillup_set.all %}
       <table>
         <thead>
           <tr>
@@ -29,17 +58,23 @@
           </tr>
         </thead>
         <tbody>
-        {% for fillup in vehicle.fillup_set.all %}
+          {% for fillup in vehicle.fillup_set.all %}
           <tr>
             <td>{{ fillup.date }}</td>
             <td>{{ fillup.odometer }}</td>
             <td>{{ fillup.gallons }}</td>
           </tr>
-        {% endfor %}
+          {% endfor %}
       </table>
-    {% else %}
+      {% else %}
       <p>You haven't entered any fillups for this vehicle yet.</p>
-    {% endif %}
+      {% endif %}
+    </div>
+    <div id="maintenance" class="span-15 last">
+      <h3>Maintenance</h3>
+    </div>
   </div>
+</div>
+
 {% endblock %}
-  
+
