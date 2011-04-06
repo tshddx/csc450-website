@@ -32,12 +32,16 @@
         {% if vehicle.average_mileage %}
         <p class="big-stat"><span class="number">{{ vehicle.average_mileage }}</span>mpg</p>
         {% else %}
-        <p class="big-stat"><span class="na">You must have at least two fillups to calculate mileage</span></p>
+        <p class="big-stat"><span class="number">??</span></p>
         {% endif %}
         <p class="caption">Average Mileage</p>
       </div>
       <div id="carbon-footprint" class="span-5">
+        {% if vehicle.average_mileage %}
         <p class="big-stat"><span class="number">{{ vehicle.carbon_footprint.0 }}</span>{{ vehicle.carbon_footprint.1 }}</p>
+        {% else %}
+        <p class="big-stat"><span class="number">??</span></p>
+        {% endif %}
         <p class="caption">Carbon Footprint</p>
       </div>
       <div id="" class="span-5 last">
@@ -46,6 +50,9 @@
       </div>
     </div>    
     <div id="fillups" class="span-15 last">
+      {% if not vehicle.average_mileage %}
+      <p class="notice">You must have at least two fillups before mileage and carbon footprint can be calculated.</p>
+      {% endif %}
       <h3>Fillups</h3>
       <p><a href="{% url fillup_new pk=vehicle.id %}" class="button">Add a new fillup for this vehicle</a></p>
       {% if vehicle.fillup_set.all %}

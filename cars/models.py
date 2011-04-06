@@ -33,7 +33,7 @@ class Vehicle(models.Model):
 
     def average_mileage(self):
         agg = self.aggregations()
-        if agg['total_gallons'] > 0:
+        if self.fillup_set.count() >= 2 and agg['total_gallons'] != 0:
             average_mileage = (agg['max_odo'] - agg['min_odo']) / agg['total_gallons']
         else:
             average_mileage = None
@@ -42,7 +42,7 @@ class Vehicle(models.Model):
     def carbon_footprint(self):
         """Returns a tuple of (number, unit) where both number and unit are strings."""
         gallons = self.aggregations()['total_gallons']
-        co2 = float(gallons) * 99000.4
+        co2 = float(gallons) * 19.4
         # This conditional number/unit crap sucks and is probably wrong
         if co2 > 1000000:
             number = "%.1f" % (co2 / 2000000) + "k"
