@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ car }}{% endblock %}
+{% block title %}{{ vehicle.name }}{% endblock %}
 
 {% block content-area %}
   <div id="vehicle-form" class="span-11 append-1">
@@ -12,6 +12,9 @@
       </table>
       <p><input type="submit" value="Submit"></p>
     </form>
+  </div>
+  <div id="average-mileage" class="span-12 last">
+    <p class="mileage"><span class="mileage-number">{{ vehicle.average_mileage|default:"32" }}</span>mpg</p>
   </div>
   <div id="fillups" class="span-12 last">
     <h2>Fillups</h2>
@@ -37,5 +40,6 @@
     {% else %}
       <p>You haven't entered any fillups for this vehicle yet.</p>
     {% endif %}
+  </div>
 {% endblock %}
   

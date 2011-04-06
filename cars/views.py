@@ -73,6 +73,11 @@ class VehicleUpdateView(UpdateView):
     model = Vehicle
     form_class = VehicleForm
     template_name = "vehicle_detail.html"
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(PublisherDetailView, self).get_context_data(**kwargs)
+    #     context['book_list'] = Book.objects.all()
+    #     return context
     
 class FillupCreateView(CreateView):
     context_object_name = "fillup"

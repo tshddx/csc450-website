@@ -37,3 +37,15 @@ th {
 #top-menu ul {
     list-style-type: none;
 }
+
+.mileage {
+    font-size: 48px;
+    color: silver;
+    margin-bottom: 10px;
+}
+
+.mileage-number {
+    color: gray;
+    font-size: 56px;
+    margin-right: 2px;
+}
