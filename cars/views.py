@@ -12,6 +12,7 @@ import random
 from django.contrib.auth.views import login, logout
 from django.contrib.auth import login as userlogin
 from django.contrib.auth import authenticate
+from decimal import *
 
 # Importing our own stuff
 from cars.models import *
@@ -137,8 +138,8 @@ def api_fillup_create(request):
         username = request.GET['username']
         password = request.GET['password']
         vin = request.GET['vin']
-        odometer = request.GET['odometer']
-        gallons = request.GET['gallons']
+        odometer = int(request.GET['odometer'])
+        gallons = Decimal(request.GET['gallons'])
         if 'hax' in request.GET:
             user = User.objects.get(username=username)
         else:
