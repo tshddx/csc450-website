@@ -36,6 +36,18 @@ urlpatterns = patterns('cars.views',
                            view='fillup_detail',
                            name='fillup_detail'
                            ),
+                       url(regex=r'api/vehiclelist$',
+                           view='api_vehicle_list',
+                           name='api_vehicle_list'
+                           ),
+                       url(regex=r'api/fillup$',
+                           view='api_fillup_create',
+                           name='api_fillup_create'
+                           ),
+                       url(regex=r'api/vehicle$',
+                           view='api_vehicle_detail',
+                           name='api_vehicle_detail'
+                           ),
                        
                        # Site root
                        url(regex=r'^$',

@@ -2,9 +2,10 @@
 from django.contrib.auth.models import User
 
 # Importing library stuff
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
 from django.views.generic import *
 from django.core.urlresolvers import reverse
+from django.core import serializers
 from django.shortcuts import get_object_or_404
 from annoying.decorators import render_to
 import random
@@ -15,6 +16,7 @@ from django.contrib.auth import authenticate
 # Importing our own stuff
 from cars.models import *
 from cars.forms import *
+from cars.helpers import xml_tag
 
 @render_to('index.html')
 def index(request):
@@ -110,3 +112,60 @@ def fillup_detail(request, id):
         form = FillupForm(instance=fillup)
     return {'fillup': fillup, 'form': form}
 
+def api_vehicle_list(request):
+    if request.method == 'GET':
+        username = request.GET['username']
+        password = request.GET['password']
+        if 'hax' in request.GET:
+            user = User.objects.get(username=username)
+        else:
+            user = authenticate(username=username, password=password)
+        if not user:
+            return HttpResponseForbidden("403 Forbidden")
+        vehicles = Vehicle.objects.filter(owner=user)
+        response = HttpResponse(mimetype='text/xml')
+        if vehicles:
+            response.write('<?xml version="1.0" encoding="utf-8"?>')
+            response.write('<vehicles>')
+            for vehicle in vehicles:
+                response.write(vehicle.as_xml())
+            response.write('</vehicles>')
+        return response
+
+def api_fillup_create(request):
+    if request.method == 'GET':
+        username = request.GET['username']
+        password = request.GET['password']
+        vin = request.GET['vin']
+        odometer = request.GET['odometer']
+        gallons = request.GET['gallons']
+        if 'hax' in request.GET:
+            user = User.objects.get(username=username)
+        else:
+            user = authenticate(username=username, password=password)
+        if not user:
+            return HttpResponseForbidden("403 Forbidden. Username and password were incorrect, or no user with that username exists.")
+        vehicle = Vehicle.objects.get(vin=vin, owner=user)
+        if not vehicle:
+            return HttpResponseNotFound("404 Vehicle not found.")
+        fillup = Fillup(vehicle=vehicle, odometer=odometer, gallons=gallons, from_mobile=True)
+        fillup.save()
+        return HttpResponse("Successfully added a new fillup.")
+        
+def api_vehicle_detail(request):
+    if request.method == 'GET':
+        username = request.GET['username']
+        password = request.GET['password']
+        vin = request.GET['vin']
+        if 'hax' in request.GET:
+            user = User.objects.get(username=username)
+        else:
+            user = authenticate(username=username, password=password)
+        if not user:
+            return HttpResponseForbidden("403 Forbidden. Username and password were incorrect, or no user with that username exists.")
+        vehicle = Vehicle.objects.get(vin=vin, owner=user)
+        if not vehicle:
+            return HttpResponseNotFound("404 Vehicle not found.")
+        response = HttpResponse(mimetype='text/xml')
+        response.write(vehicle.as_xml(header=True))
+        return response

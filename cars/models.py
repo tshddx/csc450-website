@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from cars.helpers import xml_tag
+
 import datetime
 
 class Vehicle(models.Model):
@@ -10,6 +12,7 @@ class Vehicle(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     owner = models.ForeignKey(User)
+    vin = models.CharField(max_length=32, null=True, blank=True)
 
     def __unicode__(self):
         return '"%s" - %s %s %s' % (self.name, self.year, self.make, self.model)
@@ -21,6 +24,19 @@ class Vehicle(models.Model):
     def as_a(self):
         """Returns a string <a> element that links to the car's detail page. Use |safe in templates."""
         return '<a href="%s">%s</a>' % (self.get_absolute_url(), self.name)
+
+    def as_xml(self, header=False):
+        contents = ''
+        contents += xml_tag('id', self.pk)
+        contents += xml_tag('make', self.make)
+        contents += xml_tag('model', self.model)
+        contents += xml_tag('year', self.year)
+        contents += xml_tag('name', self.name)
+        contents += xml_tag('description', self.description)
+        contents += xml_tag('owner', self.owner)
+        contents += xml_tag('vin', self.vin)
+        contents += xml_tag('mileage', self.average_mileage())
+        return xml_tag('vehicle', contents, header=header)
 
     def aggregations(self):
         fillups = self.fillup_set.order_by("date")
