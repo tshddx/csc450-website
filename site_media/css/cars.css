@@ -71,3 +71,10 @@ th {
     font-size: 12px;
 }
 
+.strong {
+    font-weight: bold;
+}
+
+.big {
+    font-size: 110%;
+}

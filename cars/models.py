@@ -6,6 +6,17 @@ from cars.helpers import xml_tag, maintenance_alerts as m_alerts
 
 import datetime
 
+MAINTENANCE_CATEGORIES = (
+    ('OC', 'Oil Change'),
+    ('TR', 'Tire Rotation'),
+    ('OF', 'Oil Filter'),
+    ('AF', 'Air Filter'),
+    )
+
+MAINTENANCE_CATEGORIES_DICT = dict()
+for k, v in MAINTENANCE_CATEGORIES:
+    MAINTENANCE_CATEGORIES_DICT[k] = v
+
 class Vehicle(models.Model):
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
@@ -79,8 +90,11 @@ class Vehicle(models.Model):
 
     def maintenance_alerts(self):
         alerts = m_alerts(self)
+        for alert in alerts:
+            alert['category_full'] = MAINTENANCE_CATEGORIES_DICT[alert['category']]
+            alert['due_at'] = alert['most_recent_odometer'] + 3000
         mro = self.most_recent_odometer()
-        upcoming_alerts = [alert for alert in alerts if alert['most_recent_odometer']  > mro + 250]
+        upcoming_alerts = [alert for alert in alerts if alert['due_at'] < mro + 500]
         return upcoming_alerts
 
 class Fillup(models.Model):
@@ -101,13 +115,7 @@ class Maintenance(models.Model):
     vehicle = models.ForeignKey(Vehicle)
     date = models.DateTimeField(default=datetime.datetime.now())
     odometer = models.IntegerField(null=True, blank=True)
-    MAINTENANCE_CATEGORY = (
-        ('OC', 'Oil Change'),
-        ('TR', 'Tire Rotation'),
-        ('OF', 'Oil Filter'),
-        ('AF', 'Air Filter'),
-        )
-    category = models.CharField(max_length=2, choices=MAINTENANCE_CATEGORY)
+    category = models.CharField(max_length=2, choices=MAINTENANCE_CATEGORIES)
     notes = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
