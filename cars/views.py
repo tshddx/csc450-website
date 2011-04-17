@@ -169,3 +169,24 @@ def api_vehicle_detail(request):
         response = HttpResponse(mimetype='text/xml')
         response.write(vehicle.as_xml(header=True))
         return response
+
+class MaintenanceCreateView(CreateView):
+    context_object_name = "maintenance"
+    template_name = "maintenance_new.html"
+    form_class = MaintenanceForm
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateView, self).get_form_kwargs()
+        vehicle = get_object_or_404(Vehicle, id=self.kwargs['pk'])
+        kwargs['vehicle'] = vehicle
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateView, self).get_context_data(**kwargs)
+        context['vehicle'] = get_object_or_404(Vehicle, id=self.kwargs['pk'])
+        return context
+
+    def get_success_url(self):
+        vehicle = get_object_or_404(Vehicle, id=self.kwargs['pk'])
+        return vehicle.get_absolute_url()
+

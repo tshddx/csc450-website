@@ -79,6 +79,28 @@
     </div>
     <div id="maintenance" class="span-15 last">
       <h3>Maintenance</h3>
+      <p><a href="{% url maintenance_new pk=vehicle.id %}" class="button">Add a new maintenance for this vehicle</a></p>
+      {% if vehicle.maintenance_set.all %}
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Odometer</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for maintenance in vehicle.maintenance_set.all %}
+          <tr>
+            <td>{{ maintenance.date }}</td>
+            <td>{{ maintenance.get_category_display }}</td>
+            <td>{{ maintenance.odometer }}</td>
+          </tr>
+          {% endfor %}
+      </table>
+      {% else %}
+      <p>You haven't entered any maintenance for this vehicle yet.</p>
+      {% endif %}
     </div>
   </div>
 </div>

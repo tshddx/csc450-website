@@ -50,3 +50,17 @@ class FillupForm(forms.ModelForm):
         fillup = super(FillupForm, self).save(commit=False)
         fillup.vehicle = self.vehicle_model
         fillup.save()
+
+class MaintenanceForm(forms.ModelForm):
+    class Meta:
+        model = Maintenance
+        exclude = ['vehicle', 'date']
+
+    def __init__(self, *args, **kwargs):
+        self.vehicle_model = kwargs.pop('vehicle')
+        super(MaintenanceForm, self).__init__(*args, **kwargs)
+
+    def save(self):
+        maintenance = super(MaintenanceForm, self).save(commit=False)
+        maintenance.vehicle = self.vehicle_model
+        maintenance.save()

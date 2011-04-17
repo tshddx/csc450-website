@@ -48,6 +48,10 @@ urlpatterns = patterns('cars.views',
                            view='api_vehicle_detail',
                            name='api_vehicle_detail'
                            ),
+                       url(regex=r'^vehicle/(?P<pk>[0-9]*)/maintenance/new$',
+                           view=MaintenanceCreateView.as_view(),
+                           name='maintenance_new'
+                           ),
                        
                        # Site root
                        url(regex=r'^$',
