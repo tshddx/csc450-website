@@ -79,6 +79,9 @@
     </div>
     <div id="maintenance" class="span-15 last">
       <h3>Maintenance</h3>
+      {% for m in vehicle.maintenance_alerts %}
+      <p class="error">{{ m.category }} due at {{ m.most_recent_odometer }} miles.</p>
+      {% endfor %}
       <p><a href="{% url maintenance_new pk=vehicle.id %}" class="button">Add a new maintenance for this vehicle</a></p>
       {% if vehicle.maintenance_set.all %}
       <table>

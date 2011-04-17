@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Max
 
-from cars.helpers import xml_tag
+from cars.helpers import xml_tag, maintenance_alerts as m_alerts
 
 import datetime
 
@@ -72,7 +73,16 @@ class Vehicle(models.Model):
             number = "%.0f" % co2
             unit = "lb"
         return (number, unit)
-            
+
+    def most_recent_odometer(self):
+        return self.fillup_set.aggregate(max=Max('odometer'))['max']
+
+    def maintenance_alerts(self):
+        alerts = m_alerts(self)
+        mro = self.most_recent_odometer()
+        upcoming_alerts = [alert for alert in alerts if alert['most_recent_odometer']  > mro + 250]
+        return upcoming_alerts
+
 class Fillup(models.Model):
     vehicle = models.ForeignKey(Vehicle)
     date = models.DateTimeField(default=datetime.datetime.now())
@@ -100,5 +110,5 @@ class Maintenance(models.Model):
     category = models.CharField(max_length=2, choices=MAINTENANCE_CATEGORY)
     notes = models.TextField(null=True, blank=True)
 
-    def __unicode(self):
+    def __unicode__(self):
         return '%s on %s' % (self.category, self.date)
