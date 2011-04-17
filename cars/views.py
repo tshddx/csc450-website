@@ -50,7 +50,6 @@ def dashboard(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('index'))
     vehicles = request.user.vehicle_set.all()
-    print vehicles
     return {'vehicles': vehicles}
 
 @render_to('add_car.html')
