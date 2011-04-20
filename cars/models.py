@@ -89,13 +89,17 @@ class Vehicle(models.Model):
     def most_recent_odometer(self):
         return self.fillup_set.aggregate(max=Max('odometer'))['max']
 
-    def maintenance_alerts(self):
+    def maintenance_alerts(self, show_all=False):
+        """Returns a list of dictionaries representing the most recent of each category of maintenance report. If show_all=True, it will return all categories, otherwise it will return upcoming ones."""
         alerts = m_alerts(self)
         for alert in alerts:
             alert['category_full'] = MAINTENANCE_CATEGORIES_DICT[alert['category']]
             alert['due_at'] = alert['most_recent_odometer'] + 3000
         mro = self.most_recent_odometer()
-        upcoming_alerts = [alert for alert in alerts if alert['due_at'] < mro + 500]
+        if show_all:
+            upcoming_alerts = [alert for alert in alerts]
+        else:
+            upcoming_alerts = [alert for alert in alerts if alert['due_at'] < mro + 500]
         return upcoming_alerts
 
 class Fillup(models.Model):
