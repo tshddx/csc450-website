@@ -52,6 +52,10 @@ urlpatterns = patterns('cars.views',
                            view=MaintenanceCreateView.as_view(),
                            name='maintenance_new'
                            ),
+                       url(regex=r'^export$',
+                           view=export_data,
+                           name='export_data'
+                           ),
                        
                        # Site root
                        url(regex=r'^$',

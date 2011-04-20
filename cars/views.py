@@ -13,6 +13,8 @@ from django.contrib.auth.views import login, logout
 from django.contrib.auth import login as userlogin
 from django.contrib.auth import authenticate
 from decimal import *
+from django.contrib.auth.decorators import login_required
+import csv
 
 # Importing our own stuff
 from cars.models import *
@@ -190,3 +192,28 @@ class MaintenanceCreateView(CreateView):
         vehicle = get_object_or_404(Vehicle, id=self.kwargs['pk'])
         return vehicle.get_absolute_url()
 
+@login_required
+def export_data(request):
+    response = HttpResponse(mimetype='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=somefilename.csv'
+    writer = csv.writer(response, delimiter="\t")
+
+    user = request.user
+    vehicles = user.vehicle_set.all()
+    fillups = Fillup.objects.filter(vehicle__owner=user)
+    maintenances = Maintenance.objects.filter(vehicle__owner=user)
+
+    for vehicle in vehicles:
+        writer.writerow([vehicle.id, vehicle.name, vehicle.year, vehicle.make, vehicle.model, vehicle.description])
+
+    writer.writerow([])
+        
+    for fillup in fillups:
+        writer.writerow([fillup.vehicle.id, fillup.date, fillup.odometer, fillup.gallons])
+
+    writer.writerow([])
+
+    for maintenance in maintenances:
+        writer.writerow([maintenance.vehicle.id, maintenance.date, maintenance.get_category_display(), maintenance.odometer, maintenance.notes])
+    
+    return response

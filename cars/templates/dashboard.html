@@ -4,6 +4,7 @@
 
 {% block content-area %}
   <h2>{{ user.username }}'s dashboard</h2>
+  <hr />
   {% if vehicles %}
     <h3>Your Vehicles</h3>
     <ul>
@@ -11,10 +12,15 @@
         <li>{{ vehicle.as_a|safe }}</li>
       {% endfor %}
     </ul>
-    <p><a href="{% url add_car %}">Add another vehicle</a>.</p>
+    <p><a href="{% url add_car %}" class="button">Add another vehicle</a></p>
   {% else %}
     <p>Welcome! The first thing to do is <a href="{% url add_car %}">add a vehicle</a>.</p>
   {% endif %}
+  <hr />
+  <h3>Administration</h3>
+  <ul>
+    <li><a href="{% url export_data %}">Export data</a> as a tab-delimited text file.</li> 
+  </ul>
   
 {% endblock %}
   
