@@ -48,6 +48,7 @@ class Vehicle(models.Model):
         contents += xml_tag('owner', self.owner)
         contents += xml_tag('vin', self.vin)
         contents += xml_tag('mileage', self.average_mileage())
+        contents += xml_tag('carbon', self.carbon_footprint())
         return xml_tag('vehicle', contents, header=header)
 
     def aggregations(self):
