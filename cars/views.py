@@ -15,6 +15,7 @@ from django.contrib.auth import authenticate
 from decimal import *
 from django.contrib.auth.decorators import login_required
 import csv
+from datetime import datetime
 
 # Importing our own stuff
 from cars.models import *
@@ -194,11 +195,12 @@ class MaintenanceCreateView(CreateView):
 
 @login_required
 def export_data(request):
+    user = request.user
+    
     response = HttpResponse(mimetype='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=somefilename.csv'
+    response['Content-Disposition'] = 'attachment; filename=%s.%s_vehicle_data_%s.csv' % (user.first_name, user.last_name, datetime.datetime.now())
     writer = csv.writer(response, delimiter="\t")
 
-    user = request.user
     vehicles = user.vehicle_set.all()
     fillups = Fillup.objects.filter(vehicle__owner=user)
     maintenances = Maintenance.objects.filter(vehicle__owner=user)
