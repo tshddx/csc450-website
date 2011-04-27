@@ -48,7 +48,7 @@ class Vehicle(models.Model):
         contents += xml_tag('owner', self.owner)
         contents += xml_tag('vin', self.vin)
         contents += xml_tag('mileage', self.average_mileage())
-        contents += xml_tag('carbon', self.carbon_footprint())
+        contents += xml_tag('carbon', "%s %s" % self.carbon_footprint())
         maint_tags = ''
         for alert in self.maintenance_alerts():
             maint_tag = ''
