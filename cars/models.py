@@ -49,6 +49,13 @@ class Vehicle(models.Model):
         contents += xml_tag('vin', self.vin)
         contents += xml_tag('mileage', self.average_mileage())
         contents += xml_tag('carbon', self.carbon_footprint())
+        maint_tags = ''
+        for alert in self.maintenance_alerts():
+            maint_tag = ''
+            maint_tag += xml_tag('category', alert['category_full'])
+            maint_tag += xml_tag('due_when_odometer_at', alert['due_at'])
+            maint_tags += xml_tag('alert', maint_tag)
+        contents += xml_tag('maintenance_alerts', maint_tags)
         return xml_tag('vehicle', contents, header=header)
 
     def aggregations(self):
