@@ -73,7 +73,7 @@ class Vehicle(models.Model):
             average_mileage = (agg['max_odo'] - agg['min_odo']) / agg['total_gallons']
         else:
             average_mileage = None
-        return "%.1f" % average_mileage
+        return "%.1f" % average_mileage if average_mileage else "0"
 
     def carbon_footprint(self):
         """Returns a tuple of (number, unit) where both number and unit are strings."""
