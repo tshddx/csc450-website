@@ -78,7 +78,7 @@ class Vehicle(models.Model):
     def carbon_footprint(self):
         """Returns a tuple of (number, unit) where both number and unit are strings."""
         gallons = self.aggregations()['total_gallons']
-        co2 = float(gallons) * 19.4
+        co2 = float(gallons) * 19.4 if gallons else float(0)
         # This conditional number/unit crap sucks and is probably wrong
         if co2 > 1000000:
             number = "%.1f" % (co2 / 2000000) + "k"
